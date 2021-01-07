@@ -32,6 +32,7 @@ app.get("/api/:format", function(req, res, next){
                     })
                 })
                 res.json(all)
+                return
             }
 
             const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
