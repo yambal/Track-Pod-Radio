@@ -23,7 +23,7 @@ app.get("/api/:format", function(req, res, next){
     }
     console.log('fixed feed', feed)
 
-    const format = req.params.format || 'text'
+    const format = 'text'
 
     return parseFeed(feed)
         .then((feeds) => {
@@ -82,7 +82,6 @@ const getBin = (url) => {
                 console.error(29, err);
                 reject(err)
             } else {
-                console.error(33, res.statusCode);
                 if (res.statusCode === 200) {
                     resolve(data);
                 } else {
