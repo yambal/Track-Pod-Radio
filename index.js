@@ -28,14 +28,26 @@ app.get("/api/:format", function(req, res, next){
 
     return parseFeed(feed)
         .then((feeds) => {
-            const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
-            const encUrl = enc["@"].url
+
 
             if (format == 'text') {
-                res.json({format: 'text'})
+                const all = []
+                feeds.map(
+                    (feed) => {
+                        const enc = feed["rss:enclosure"] || feed.enclosure
+                        const encUrl = enc["@"].url
+                        all.push({
+                            mps: encUrl
+                        })
+                    }
+                )
+                res.json(all)
                 res.end()
                 return
             }
+
+            const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
+            const encUrl = enc["@"].url
 
             return getBin(encUrl)
                 .then((bin) => {
