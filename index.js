@@ -18,9 +18,8 @@ app.get("/api", function(req, res, next){
         .then((feeds) => {
             const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
             const encUrl = enc["@"].url
-            res.json({encUrl: encUrl})
 
-            getBin(encUrl)
+            return getBin(encUrl)
                 .then((bin) => {
                     res.writeHead(200, {'Content-Type': 'audio/mpeg'});
                     res.write(bin.toString('binary'), 'binary');
