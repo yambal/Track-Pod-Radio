@@ -19,12 +19,45 @@ app.get("/api", function(req, res, next){
             const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
             const encUrl = enc["@"].url
             res.json({encUrl: encUrl})
+
+            getBin(encUrl)
+                .then((bin) => {
+                    res.writeHead(200, {'Content-Type': 'audio/mpeg'});
+                    res.write(bin.toString('binary'), 'binary');
+                    res.end()
+                })
+                .catch(()=>{
+                    res.json({encUrl: 'cant bin'})
+                })
         })
         .catch(() => {
             res.json({encUrl: 'reject'})
         })
 });
 
+const getBin = (url) => {
+    console.error(23, url);
+    return new Promise((resolve, reject) => {
+      request({
+        url: url, 
+        encoding: null
+      }, function (err, res, data) {
+        if (err) {
+          console.error(29, err);
+          reject(err)
+        }
+        else {
+          console.error(33, res.statusCode);
+          if (res.statusCode === 200) {
+            resolve(data);
+          }
+          else {
+            reject('can\'t process.')
+          }
+        }
+      });
+    })
+   }
 //
 const parseFeed = (url) => {
     console.error(url);
