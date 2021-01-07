@@ -21,8 +21,7 @@ app.get("/api/:format", function(req, res, next){
     if (req.query.feed) {
         feed = req.query.feed
     }
-
-    console.log('fixed feed', req.query.feed)
+    console.log('fixed feed', feed)
 
     return parseFeed(feed)
         .then((feeds) => {
