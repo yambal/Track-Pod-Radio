@@ -35,28 +35,29 @@ app.get("/api", function(req, res, next){
 });
 
 const getBin = (url) => {
-    console.error(23, url);
+    console.log('---------- getBin ----------');
+    console.log(url);
     return new Promise((resolve, reject) => {
-      request({
-        url: url, 
-        encoding: null
-      }, function (err, res, data) {
-        if (err) {
-          console.error(29, err);
-          reject(err)
-        }
-        else {
-          console.error(33, res.statusCode);
-          if (res.statusCode === 200) {
-            resolve(data);
-          }
-          else {
-            reject('can\'t process.')
-          }
-        }
-      });
+        request({
+            url: url, 
+            encoding: null
+        }, (err, res, data) => {
+            console.log(45)
+            if (err) {
+                console.error(29, err);
+                reject(err)
+            } else {
+                console.error(33, res.statusCode);
+                if (res.statusCode === 200) {
+                    resolve(data);
+                } else {
+                    reject('can\'t process.')
+                }
+            }
+        });
     })
-   }
+}
+
 //
 const parseFeed = (url) => {
     console.error(url);
