@@ -15,7 +15,9 @@ var server = app.listen(PORT, function(){
 
 app.get("/api", function(req, res, next){
     // res.json({url: req.query.url})
-    return parseFeed('https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml')
+    const feed = req.query.url || 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
+
+    return parseFeed(feed)
         .then((feeds) => {
             const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
             const encUrl = enc["@"].url
