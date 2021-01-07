@@ -19,6 +19,7 @@ app.get("/api", function(req, res, next){
     
     let feed = 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
     if (req.query.feed) {
+        console.log('has feed:', req.query.feed)
         feed = req.query.feed
     }
 
