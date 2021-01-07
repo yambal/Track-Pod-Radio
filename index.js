@@ -72,22 +72,23 @@ const getBin = (url) => {
 
 //
 const parseFeed = (url) => {
-    console.error(url);
-   return new Promise((resolve, reject) => {
-    var req = fetch(url)
-    var feedparser = new FeedParser();
+    console.log('---------- parser start ----------');
+    console.log(url)
+    return new Promise((resolve, reject) => {
+        var req = fetch(url)
+        var feedparser = new FeedParser();
   
-    let feeds = []
-    req.then(function (res) {
-      if (res.status !== 200) {
-        throw new Error('Bad status code');
-      }
-      else {
-        res.body.pipe(feedparser);
-      }
-    }, function (err) {
-  
-    });
+        let feeds = []
+        req.then(function (res) {
+        if (res.status !== 200) {
+            reject(`${res.status}: Bad status code`)
+        }
+        else {
+            res.body.pipe(feedparser);
+        }
+        }, function (err) {
+    
+        });
   
     feedparser.on('error', function (error) {
   
