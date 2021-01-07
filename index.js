@@ -16,7 +16,12 @@ var server = app.listen(PORT, function(){
 app.get("/api/:format", function(req, res, next){
     console.log('feed', req.query.feed)
     console.log('format', req.params.format)
-    const feed = req.query.feed || 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
+    
+    let feed = 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
+    if (req.query.feed) {
+        feed = req.query.feed
+    }
+
     console.log('fixed feed', req.query.feed)
 
     return parseFeed(feed)
