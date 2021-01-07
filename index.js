@@ -33,7 +33,7 @@ app.get("/api", function(req, res, next){
                 })
         })
         .catch(() => {
-            return getBin('./static/parseFeedError.mp3')
+            return getBin('https://yambal.github.io/Track-Pod-Radio/parseFeedError.mp3')
                 .then((bin) => {
                     res.writeHead(200, {'Content-Type': 'audio/mpeg'});
                     res.write(bin.toString('binary'), 'binary');
