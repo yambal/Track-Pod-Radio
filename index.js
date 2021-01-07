@@ -23,6 +23,8 @@ app.get("/api/:format", function(req, res, next){
     }
     console.log('fixed feed', feed)
 
+    const format = req.params.format || 'text'
+
     return parseFeed(feed)
         .then((feeds) => {
 
