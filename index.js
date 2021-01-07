@@ -15,20 +15,14 @@ var server = app.listen(PORT, function(){
 
 app.get("/api/:format", function(req, res, next){
     console.log('====================================');
-    console.log('feed', req.query.feed)
-    
-    let feed = 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
-    if (req.query.feed) {
-        console.log('has feed:', req.query.feed)
-        feed = req.query.feed
-    }
-
+    console.log(`request format:${req.params.format}, feed:${req.query.feed}`)
+    const feed = req.query.feed || 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
     const format = req.params.format || 'text'
-    console.log('format', format)
+
+    console.log(`fix format:${format}, feed:${feed}`)
 
     return parseFeed(feed)
         .then((feeds) => {
-
 
             if (format == 'text') {
                 const all = []
@@ -37,11 +31,18 @@ app.get("/api/:format", function(req, res, next){
                         const enc = feed["rss:enclosure"] || feed.enclosure
                         const encUrl = enc["@"].url
                         all.push({
-                            mps: encUrl
+                            title: feed.title,
+                            mp3: encUrl
                         })
                     }
                 )
-                res.json(all)
+                res.json({
+                    status: 'ok',
+                    feed: feed,
+                    format: 'text',
+                    count: all.length,
+                    results: all
+                })
                 res.end()
                 return
             }
@@ -51,16 +52,34 @@ app.get("/api/:format", function(req, res, next){
 
             return getBin(encUrl)
                 .then((bin) => {
+                    if (format == 'text') {
+                        res.json({
+                            status: 'error',
+                            feed: feed,
+                            format: 'text',
+                            count: 0,
+                            results: []
+                        })
+                        res.end()
+                        return
+                    }
+
                     res.writeHead(200, {'Content-Type': 'audio/mpeg'});
                     res.write(bin.toString('binary'), 'binary');
                     res.end()
                 })
                 .catch(()=>{
-                    res.json({encUrl: 'cant bin'})
+                    res.json({
+                        feed: feed,
+                        format: 'text',
+                        count: all.length,
+                        results: all
+                    })
+                    res.end()
+                    return
                 })
         })
         .catch((error) => {
-            console.log(36, error)
             return getBin('https://yambal.github.io/Track-Pod-Radio/parseFeedError.mp3')
                 .then((bin) => {
                     res.writeHead(200, {'Content-Type': 'audio/mpeg'});
