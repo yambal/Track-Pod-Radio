@@ -13,8 +13,9 @@ var server = app.listen(PORT, function(){
 });
 
 
-app.get("/api", function(req, res, next){
-    // res.json({url: req.query.url})
+app.get("/api/:format", function(req, res, next){
+    console.log('feed', req.query.feed)
+    console.log('format', req.params.format)
     const feed = req.query.feed || 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
 
     return parseFeed(feed)
@@ -32,7 +33,8 @@ app.get("/api", function(req, res, next){
                     res.json({encUrl: 'cant bin'})
                 })
         })
-        .catch(() => {
+        .catch((error) => {
+            console.log(36, error)
             return getBin('https://yambal.github.io/Track-Pod-Radio/parseFeedError.mp3')
                 .then((bin) => {
                     res.writeHead(200, {'Content-Type': 'audio/mpeg'});
