@@ -13,7 +13,7 @@ var server = app.listen(PORT, function(){
 });
 
 
-app.get("/api", function(req, res, next){
+app.get("/api/:format", function(req, res, next){
     console.log('====================================');
     console.log('feed', req.query.feed)
     
@@ -22,6 +22,9 @@ app.get("/api", function(req, res, next){
         console.log('has feed:', req.query.feed)
         feed = req.query.feed
     }
+
+    const format = req.params.format || 'text'
+    console.log('format', format)
 
     return parseFeed(feed)
         .then((feeds) => {
