@@ -33,7 +33,7 @@ app.get("/api", function(req, res, next){
                 })
         })
         .catch(() => {
-            return getBin('https://etc2-pod-radio.herokuapp.com/static/parseFeedError.mp3')
+            return getBin('./static/parseFeedError.mp3')
                 .then((bin) => {
                     res.writeHead(200, {'Content-Type': 'audio/mpeg'});
                     res.write(bin.toString('binary'), 'binary');
