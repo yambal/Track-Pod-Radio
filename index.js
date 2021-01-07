@@ -31,6 +31,12 @@ app.get("/api/:format", function(req, res, next){
             const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
             const encUrl = enc["@"].url
 
+            if (format == 'text') {
+                res.json({format: 'text'})
+                res.end()
+                return
+            }
+
             return getBin(encUrl)
                 .then((bin) => {
                     res.writeHead(200, {'Content-Type': 'audio/mpeg'});
