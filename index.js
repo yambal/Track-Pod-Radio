@@ -14,6 +14,7 @@ var server = app.listen(PORT, function(){
 
 
 app.get("/api", function(req, res, next){
+    console.log('====================================');
     console.log('feed', req.query.feed)
     
     let feed = 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
