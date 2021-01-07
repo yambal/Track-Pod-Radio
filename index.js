@@ -1,7 +1,8 @@
 var express = require("express");
 var app = express();
+const PORT = process.env.PORT || 5000
 
-var server = app.listen(8080, function(){
+var server = app.listen(PORT, function(){
     console.log("Node.js is listening to PORT:" + server.address().port);
 });
 
