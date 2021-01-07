@@ -3,6 +3,7 @@ var app = express()
 
 var FeedParser = require('feedparser')
 var fetch = require('node-fetch')
+var request = require('request');
 
 const PORT = process.env.PORT || 5000
 
@@ -38,6 +39,7 @@ const getBin = (url) => {
     console.log('---------- getBin ----------');
     console.log(url);
     return new Promise((resolve, reject) => {
+        console.log(41)
         request({
             url: url, 
             encoding: null
