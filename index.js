@@ -21,14 +21,16 @@ app.get("/api/:format", function(req, res, next){
     if (req.query.feed) {
         feed = req.query.feed
     }
-    console.log('fixed feed', feed)
+    
 
     const format = 'text'
+
+    console.log('fixed feed, format', feed, format)
 
     return parseFeed(feed)
         .then((feeds) => {
 
-            if (format === 'text') {
+            if (format == 'text') {
                 const all = []
                 feeds.map((feed) => {
                     const enc = feed[0]["rss:enclosure"] || feed[0].enclosure
