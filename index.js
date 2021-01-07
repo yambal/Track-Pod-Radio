@@ -20,6 +20,6 @@ var photoList = [
     }
 ]
 
-app.get("/api/photo/list", function(req, res, next){
-    res.json(photoList);
+app.get("/api", function(req, res, next){
+    res.json({url: req.query.url})
 });
