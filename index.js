@@ -13,36 +13,16 @@ var server = app.listen(PORT, function(){
 });
 
 
-app.get("/api/:format", function(req, res, next){
+app.get("/api", function(req, res, next){
     console.log('feed', req.query.feed)
-    console.log('format', req.params.format)
     
     let feed = 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
     if (req.query.feed) {
         feed = req.query.feed
     }
-    
-
-    const format = 'text'
-
-    console.log('fixed feed, format', feed, format)
 
     return parseFeed(feed)
         .then((feeds) => {
-
-            if (format == 'text') {
-                const all = []
-                feeds.map((feed) => {
-                    const enc = feed[0]["rss:enclosure"] || feed[0].enclosure
-                    const encUrl = enc["@"].url
-                    all.push({
-                        mp3: encUrl
-                    })
-                })
-                res.json(all)
-                return
-            }
-
             const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
             const encUrl = enc["@"].url
 
@@ -74,12 +54,10 @@ const getBin = (url) => {
     console.log('---------- getBin ----------');
     console.log(url);
     return new Promise((resolve, reject) => {
-        console.log(41)
         request({
             url: url, 
             encoding: null
         }, (err, res, data) => {
-            console.log(45)
             if (err) {
                 console.error(29, err);
                 reject(err)
