@@ -17,10 +17,10 @@ app.get("/api/:format", function(req, res, next){
     console.log('feed', req.query.feed)
     console.log('format', req.params.format)
     const feed = req.query.feed || 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
+    console.log('fixed feed', req.query.feed)
 
     return parseFeed(feed)
         .then((feeds) => {
-
 
             if (format === 'text') {
                 const all = []
