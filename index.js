@@ -15,7 +15,7 @@ var server = app.listen(PORT, function(){
 
 app.get("/api", function(req, res, next){
     // res.json({url: req.query.url})
-    const feed = req.query.url || 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
+    const feed = req.query.feed || 'https://www.nhk.or.jp/r-news/podcast/nhkradionews.xml'
 
     return parseFeed(feed)
         .then((feeds) => {
@@ -33,7 +33,15 @@ app.get("/api", function(req, res, next){
                 })
         })
         .catch(() => {
-            res.json({encUrl: 'reject'})
+            return getBin('https://etc2-pod-radio.herokuapp.com/static/parseFeedError.mp3')
+                .then((bin) => {
+                    res.writeHead(200, {'Content-Type': 'audio/mpeg'});
+                    res.write(bin.toString('binary'), 'binary');
+                    res.end()
+                })
+                .catch(()=>{
+                    res.json({encUrl: 'cant bin'})
+                })
         })
 });
 
