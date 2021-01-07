@@ -20,6 +20,20 @@ app.get("/api/:format", function(req, res, next){
 
     return parseFeed(feed)
         .then((feeds) => {
+
+
+            if (format === 'text') {
+                const all = []
+                feeds.map((feed) => {
+                    const enc = feed[0]["rss:enclosure"] || feed[0].enclosure
+                    const encUrl = enc["@"].url
+                    all.push({
+                        mp3: encUrl
+                    })
+                })
+                res.json(all)
+            }
+
             const enc = feeds[0]["rss:enclosure"] || feeds[0].enclosure
             const encUrl = enc["@"].url
 
